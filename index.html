@@ -2,31 +2,41 @@
 <html lang="pt-BR">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#fef3c7" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <title>Mestre do Biscoito</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;600&display=swap');
       
+      :root {
+        --safe-area-top: env(safe-area-inset-top);
+        --safe-area-bottom: env(safe-area-inset-bottom);
+      }
+
       body {
         font-family: 'Fredoka', sans-serif;
         background-color: #fef3c7; /* amber-100 */
-        overscroll-behavior: none;
+        overscroll-behavior: none; /* Prevents pull-to-refresh on mobile */
+        touch-action: manipulation; /* Improves touch response */
+        -webkit-tap-highlight-color: transparent;
+        -webkit-font-smoothing: antialiased;
+        overflow: hidden; /* App-like feel */
       }
 
-      /* Custom scrollbar for the store */
+      /* Custom scrollbar optimized for mobile usage (thinner but visible) */
       .custom-scrollbar::-webkit-scrollbar {
-        width: 8px;
+        width: 4px;
+        height: 4px; /* For horizontal scroll */
       }
       .custom-scrollbar::-webkit-scrollbar-track {
-        background: rgba(0,0,0,0.05);
+        background: rgba(0,0,0,0.02);
       }
       .custom-scrollbar::-webkit-scrollbar-thumb {
         background: #d97706;
         border-radius: 4px;
-      }
-      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-        background: #b45309;
       }
 
       /* Click animation class */
@@ -50,40 +60,29 @@
       }
 
       /* --- Floating Number Effect Styles --- */
-
       .click-feedback {
         position: absolute;
         pointer-events: none;
         user-select: none;
         z-index: 50;
+        white-space: nowrap;
       }
 
       /* Número Flutuante Suave */
       .click-floating-number {
         transform: translate(-50%, -50%);
         font-weight: 800;
-        font-size: 1.6rem;
+        font-size: clamp(1.5rem, 5vw, 2rem);
         color: #ffffff;
         text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-        /* Sem background, apenas o número limpo e impactante */
-        animation: smoothFloat 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        animation: smoothFloat 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        will-change: transform, opacity;
       }
 
       @keyframes smoothFloat {
-        0% {
-          opacity: 0;
-          transform: translate(-50%, 0px) scale(0.5);
-        }
-        15% {
-          /* Pop rápido e cresce */
-          opacity: 1;
-          transform: translate(-50%, -20px) scale(1.2);
-        }
-        100% {
-          /* Sobe devagar e some */
-          opacity: 0;
-          transform: translate(-50%, -80px) scale(1);
-        }
+        0% { opacity: 0; transform: translate(-50%, 0px) scale(0.5); }
+        15% { opacity: 1; transform: translate(-50%, -20px) scale(1.2); }
+        100% { opacity: 0; transform: translate(-50%, -80px) scale(1); }
       }
 
       /* Cursor Ring Styles */
@@ -92,39 +91,42 @@
         display: inline-flex;
         justify-content: center;
         align-items: center;
+        touch-action: none; /* Prevent scrolling while tapping cookie */
       }
 
       .cursor-ring {
         position: absolute;
         inset: 0;
         pointer-events: none;
+        overflow: visible;
       }
 
       .cursor-helper {
         position: absolute;
-        width: 32px;
-        height: 32px;
+        width: clamp(24px, 6vw, 32px);
+        height: clamp(24px, 6vw, 32px);
         transform-origin: center center;
         display: flex;
         align-items: center;
         justify-content: center;
         pointer-events: none;
-        /* Usa o fill padrão do SVG (preto) com drop shadow */
-        filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.6));
-        animation-name: cursorClick;
-        animation-duration: 1s;
-        animation-iteration-count: infinite;
-        animation-timing-function: ease-in-out;
+        filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.5));
+        animation: cursorClick 1s ease-in-out infinite;
         z-index: 0;
+        will-change: transform;
         transform: translate(-50%, -50%) rotate(var(--cursor-rotation, 0deg));
       }
 
+      @media (max-width: 480px) {
+        .cursor-helper {
+           filter: none; /* Remove drop-shadow for performance on mobile */
+        }
+      }
+
       @keyframes cursorClick {
-        0%   { transform: translate(-50%, -50%) scale(1) rotate(var(--cursor-rotation, 0deg)); }
+        0%, 60%, 100% { transform: translate(-50%, -50%) scale(1) rotate(var(--cursor-rotation, 0deg)); }
         20%  { transform: translate(-50%, -50%) scale(0.9) rotate(var(--cursor-rotation, 0deg)); }
         40%  { transform: translate(-50%, -50%) scale(1.05) rotate(var(--cursor-rotation, 0deg)); }
-        60%  { transform: translate(-50%, -50%) scale(1) rotate(var(--cursor-rotation, 0deg)); }
-        100% { transform: translate(-50%, -50%) scale(1) rotate(var(--cursor-rotation, 0deg)); }
       }
     </style>
   <script type="importmap">
@@ -139,10 +141,10 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
+<link rel="stylesheet" href="./index.css">
 </head>
   <body>
     <div id="root"></div>
-  <script type="module" src="/index.tsx"></script>
+  <script type="module" src="./index.tsx"></script>
 </body>
 </html>

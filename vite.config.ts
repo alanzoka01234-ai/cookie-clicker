@@ -8,6 +8,8 @@ export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
     
     return {
+      // Base relativa para garantir que os assets carreguem em qualquer subdiretório (ex: GitHub Pages)
+      base: './',
       server: {
         port: 3000,
         host: '0.0.0.0',
