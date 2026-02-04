@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mestre do Biscoito</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;600&display=swap');
+      
+      body {
+        font-family: 'Fredoka', sans-serif;
+        background-color: #fef3c7; /* amber-100 */
+        overscroll-behavior: none;
+      }
+
+      /* Custom scrollbar for the store */
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 8px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: rgba(0,0,0,0.05);
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #d97706;
+        border-radius: 4px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #b45309;
+      }
+
+      /* Click animation class */
+      .cookie-click-anim {
+        animation: pop 0.1s ease-in-out;
+      }
+      
+      @keyframes pop {
+        0% { transform: scale(1); }
+        50% { transform: scale(0.95); }
+        100% { transform: scale(1); }
+      }
+
+      .animate-fade-in {
+        animation: fadeIn 0.2s ease-out forwards;
+      }
+      
+      @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+      }
+
+      /* --- Floating Number Effect Styles --- */
+
+      .click-feedback {
+        position: absolute;
+        pointer-events: none;
+        user-select: none;
+        z-index: 50;
+      }
+
+      /* Número Flutuante Suave */
+      .click-floating-number {
+        transform: translate(-50%, -50%);
+        font-weight: 800;
+        font-size: 1.6rem;
+        color: #ffffff;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+        /* Sem background, apenas o número limpo e impactante */
+        animation: smoothFloat 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+      }
+
+      @keyframes smoothFloat {
+        0% {
+          opacity: 0;
+          transform: translate(-50%, 0px) scale(0.5);
+        }
+        15% {
+          /* Pop rápido e cresce */
+          opacity: 1;
+          transform: translate(-50%, -20px) scale(1.2);
+        }
+        100% {
+          /* Sobe devagar e some */
+          opacity: 0;
+          transform: translate(-50%, -80px) scale(1);
+        }
+      }
+
+      /* Cursor Ring Styles */
+      .cookie-wrapper {
+        position: relative;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .cursor-ring {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      .cursor-helper {
+        position: absolute;
+        width: 32px;
+        height: 32px;
+        transform-origin: center center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        /* Usa o fill padrão do SVG (preto) com drop shadow */
+        filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.6));
+        animation-name: cursorClick;
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in-out;
+        z-index: 0;
+        transform: translate(-50%, -50%) rotate(var(--cursor-rotation, 0deg));
+      }
+
+      @keyframes cursorClick {
+        0%   { transform: translate(-50%, -50%) scale(1) rotate(var(--cursor-rotation, 0deg)); }
+        20%  { transform: translate(-50%, -50%) scale(0.9) rotate(var(--cursor-rotation, 0deg)); }
+        40%  { transform: translate(-50%, -50%) scale(1.05) rotate(var(--cursor-rotation, 0deg)); }
+        60%  { transform: translate(-50%, -50%) scale(1) rotate(var(--cursor-rotation, 0deg)); }
+        100% { transform: translate(-50%, -50%) scale(1) rotate(var(--cursor-rotation, 0deg)); }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.3",
+    "vite": "https://esm.sh/vite@^7.3.1",
+    "path": "https://esm.sh/path@^0.12.7"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
